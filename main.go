@@ -2,97 +2,39 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
-	"sync"
-	"time"
 )
 
 const (
-	SIZE   = 10_000_000 // Размер массива (10 миллионов элементов)
-	CHUNKS = 8          // Количество частей и горутин
+	SIZE   = 100_000_000
+	CHUNKS = 8
 )
 
-// generateRandomElements создает слайс заданного размера и заполняет его случайными положительными числами.
+// generateRandomElements generates random elements.
 func generateRandomElements(size int) []int {
-	if size <= 0 {
-		return []int{}
-	}
-	slice := make([]int, size)
-	for i := 0; i < size; i++ {
-		slice[i] = rand.Intn(1_000_000) + 1 // Генерируем числа от 1 до 1 000 000
-	}
-	return slice
+	// ваш код здесь
 }
 
-// maximum находит максимальное число в слайсе.
+// maximum returns the maximum number of elements.
 func maximum(data []int) int {
-	if len(data) == 0 {
-		return 0
-	}
-	maxVal := data[0]
-	for _, v := range data {
-		if v > maxVal {
-			maxVal = v
-		}
-	}
-	return maxVal
+	// ваш код здесь
 }
 
-// maxChunks находит максимальное число, разделяя слайс на CHUNKS частей и используя горутины.
+// maxChunks returns the maximum number of elements in a chunks.
 func maxChunks(data []int) int {
-	if len(data) == 0 {
-		return 0
-	}
-	// Если элементов меньше, чем частей, просто ищем максимум обычным способом
-	if len(data) < CHUNKS {
-		return maximum(data)
-	}
-
-	chunkSize := len(data) / CHUNKS
-	maxes := make([]int, CHUNKS)
-
-	var wg sync.WaitGroup
-	wg.Add(CHUNKS)
-
-	for i := 0; i < CHUNKS; i++ {
-		start := i * chunkSize
-		end := start + chunkSize
-
-		// Последняя горутина забирает "хвост", если длина не делится на 8 нацело
-		if i == CHUNKS-1 {
-			end = len(data)
-		}
-
-		// Запускаем горутину для поиска максимума в куске
-		go func(idx, s, e int) {
-			defer wg.Done()
-			maxes[idx] = maximum(data[s:e])
-		}(i, start, end)
-	}
-
-	// Ждем завершения всех 8 горутин
-	wg.Wait()
-
-	// Ищем максимум среди 8 найденных максимумов
-	return maximum(maxes)
+	// ваш код здесь
 }
 
 func main() {
-	fmt.Println("Генерация данных...")
-	data := generateRandomElements(SIZE)
+	fmt.Printf("Генерируем %d целых чисел", SIZE)
+	// ваш код здесь
 
-	// 1. Поиск в один поток
-	start := time.Now()
-	maxSingle := maximum(data)
-	durationSingle := time.Since(start)
+	fmt.Println("Ищем максимальное значение в один поток")
+	// ваш код здесь
 
-	// 2. Поиск в 8 потоков
-	start = time.Now()
-	maxMulti := maxChunks(data)
-	durationMulti := time.Since(start)
+	fmt.Printf("Максимальное значение элемента: %d\nВремя поиска: %d ms\n", max, elapsed)
 
-	// Вывод результатов
-	fmt.Printf("Размер массива: %d элементов\n", SIZE)
-	fmt.Printf("Максимум (1 поток): %d, Время: %d мкс\n", maxSingle, durationSingle.Microseconds())
-	fmt.Printf("Максимум (8 потоков): %d, Время: %d мкс\n", maxMulti, durationMulti.Microseconds())
+	fmt.Printf("Ищем максимальное значение в %d потоков", CHUNKS)
+	// ваш код здесь
+
+	fmt.Printf("Максимальное значение элемента: %d\nВремя поиска: %d ms\n", max, elapsed)
 }
