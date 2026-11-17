@@ -1,3 +1,3 @@
-module github.com/Yandex-Practicum/sprint9-final
+module max-finder
 
-go 1.24.1
+go 1.27.3
